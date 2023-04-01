@@ -84,9 +84,10 @@ query_to_string(Query *query)
         fprintf(stderr, "resname: %s\n-------------------------\n", te->resname);
         appendStringInfoString(&attr_name, te->resname);
         ListCell *next = lnext(query->targetList, lc);
-        if (next != NULL)
+        if (next != NULL) {
             fprintf(stderr, "Count\n");
             appendStringInfoString(&attr_name, ",");
+        }
     }
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
     char *attr_name_str = attr_name.data;
