@@ -10,7 +10,7 @@ void *
 _s3_supply_init(void* arg)
 {
     pthread_detach(pthread_self());
-
+    fprintf(stderr, "Thread detach\n");
     Py_Initialize();
     if (!Py_IsInitialized())
     {
@@ -22,24 +22,24 @@ _s3_supply_init(void* arg)
     PyObject *pmodule = PyImport_ImportModule("map_matrix");
     if (!pmodule)
     {
-        printf("cannot find call_py.py\n");
+        fprintf(stderr, "cannot find call_py.py\n");
 //        return -1;
     }
     else
     {
-        printf("PyImport_ImportModule success\n");
+        fprintf(stderr, "PyImport_ImportModule success\n");
     }
 
     PyObject *pfunc = PyObject_GetAttrString(pmodule, "transfer_to_s3");
     if (!pfunc)
     {
-        printf("cannot find func\n");
+        fprintf(stderr, "cannot find func\n");
         Py_XDECREF(pmodule);
 //        return -1;
     }
     else
     {
-        printf("PyObject_GetAttrString success\n");
+        fprintf(stderr, "PyObject_GetAttrString success\n");
     }
     PyObject *pArgs = PyTuple_New(0);
     PyObject *pResult = PyObject_CallObject(pfunc, pArgs);
