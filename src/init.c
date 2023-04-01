@@ -119,7 +119,7 @@ _PG_init(void)
     rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
     if (rc) {
         fprintf(stderr, "Error creating thread\n");
-        return -1;
+//        return -1;
     }
 #ifdef TS_USE_OPENSSL
 	_conn_ssl_init();

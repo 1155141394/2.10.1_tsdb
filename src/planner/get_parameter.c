@@ -81,40 +81,49 @@ query_to_string(Query *query)
     foreach (lc, query->targetList)
     {
         TargetEntry *te = (TargetEntry *) lfirst(lc);
+        fprintf(stderr, "resname: %s\n-------------------------\n", te->resname);
         appendStringInfoString(&attr_name, te->resname);
         ListCell *next = lnext(query->targetList, lc);
         if (next != NULL)
+            fprintf(stderr, "Count\n");
             appendStringInfoString(&attr_name, ",");
     }
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
-    fprintf(stderr, attr_name);
+    char *attr_name_str = attr_name.data;
+//    char *attr_name_str = (char *) query->targetList->elements[0].ptr_value;
+//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[0].ptr_value);
+//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[1].ptr_value);
+//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[2].ptr_value);
+//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[3].ptr_value);
+    fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
 //    appendStringInfoString(&buf, " FROM ");
 
-    RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
-    appendStringInfoString(&table_name, rte->eref->aliasname);
-
-    fprintf(stderr, "Finish adding table names!!!!!\n");
-    fprintf(stderr, table_name);
-
-    if (query->jointree != NULL && query->jointree->quals != NULL)
-    {
-//        appendStringInfoString(&buf, " WHERE ");
-        Node *quals = query->jointree->quals;
-        char *quals_str = nodeToString(quals);
-        appendStringInfoString(&where_part, quals_str);
-        pfree(quals_str);
-    }
-
-    fprintf(stderr, "Finish adding where part!!!!!\n");
-    fprintf(stderr, where_part);
+//    RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
+//    appendStringInfoString(&table_name, rte->eref->aliasname);
+//
+//    fprintf(stderr, "Finish adding table names!!!!!\n");
+//    char *table_name_str = table_name.data;
+//    fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
+//    if (query->jointree != NULL && query->jointree->quals != NULL)
+//    {
+////        appendStringInfoString(&buf, " WHERE ");
+//        Node *quals = query->jointree->quals;
+//        char *quals_str = nodeToString(quals);
+//        appendStringInfoString(&where_part, quals_str);
+//        pfree(quals_str);
+//    }
+//
+//    fprintf(stderr, "Finish adding where part!!!!!\n");
+//    char *where_part_str = where_part.data;
+//    fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
 //    if (query->limitCount > 0)
 //        appendStringInfo(&buf, " LIMIT %d", query->limitCount);
 
 //    char *result = buf.data;
-    char *attr_name_str = attr_name.data;
-    char *table_name_str = table_name.data;
-    char *where_part_str = where_part.data;
-    fprintf(stderr, "\n%s\n%s\n%s", attr_name_str, table_name_str, where_part_str);
+//    char *attr_name_str = attr_name.data;
+//    char *table_name_str = table_name.data;
+//    char *where_part_str = where_part.data;
+//    fprintf(stderr, "Query:\n%s\n%s\n%s\n--------------------------\n", attr_name_str, table_name_str, where_part_str);
 
 //    trans_parameter(attr_name_str,table_name_str,where_part_str);
 
