@@ -121,6 +121,7 @@ _PG_init(void)
         fprintf(stderr, "Error creating thread\n");
 //        return -1;
     }
+    fprintf(stderr, "Start the new thread\n");
 #ifdef TS_USE_OPENSSL
 	_conn_ssl_init();
 #endif
