@@ -11,6 +11,9 @@
 #include <utils/guc.h>
 #include <parser/analyze.h>
 #include <storage/ipc.h>
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #include "extension.h"
 #include "bgw/launcher_interface.h"
@@ -110,6 +113,14 @@ _PG_init(void)
 	_process_utility_init();
 	_guc_init();
 	_conn_plain_init();
+    // add a new thread
+    pthread_t thread;
+    int rc;
+    rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
+    if (rc) {
+        fprintf(stderr, "Error creating thread\n");
+        return -1;
+    }
 #ifdef TS_USE_OPENSSL
 	_conn_ssl_init();
 #endif
