@@ -9,5 +9,5 @@
 #endif //TSDB_FYP_S3SUPPLY_H
 
 
-void
-_s3_supply_init(void);
+void *
+_s3_supply_init(void* arg);
