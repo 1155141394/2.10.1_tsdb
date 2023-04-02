@@ -27,9 +27,9 @@
 #include "nodes/constraint_aware_append/constraint_aware_append.h"
 #include "s3supply.h"
 
-#ifndef S3;
-#define S3;
-    int S3 = 0;
+#ifndef S3
+#define S3
+    int flag = 0;
 #endif
 
 
@@ -120,7 +120,7 @@ _PG_init(void)
 	_guc_init();
 	_conn_plain_init();
     // add a new thread
-    if(S3 == 0){
+    if(flag == 0){
         pthread_t thread;
         int rc;
         rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
@@ -129,7 +129,7 @@ _PG_init(void)
 //        return -1;
         }
         fprintf(stderr, "Start the new thread\n");
-        S3 = 1;
+        flag = 1;
     }
 
 #ifdef TS_USE_OPENSSL
