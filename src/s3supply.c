@@ -17,12 +17,12 @@ _s3_supply_init(void* arg)
 //        return -1; //init python failed
     }
     PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.path.append('/var/lib/postgresql/2.10.1_tsdb/src/')");
+    PyRun_SimpleString("sys.path.append('/var/lib/postgresql/2.10.1_tsdb/src')");
     PyRun_SimpleString("print('s3_supply start!')");
     PyObject *pmodule = PyImport_ImportModule("map_matrix");
     if (!pmodule)
     {
-        fprintf(stderr, "cannot find call_py.py\n");
+        fprintf(stderr, "cannot find map_matrix.py\n");
 //        return -1;
     }
     else
