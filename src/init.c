@@ -119,6 +119,8 @@ _PG_init(void)
     // add a new thread
     #ifndef S3
     #define S3
+    if (!process_shared_preload_libraries_in_progress)
+    {
         pthread_t thread;
         int rc;
         rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
@@ -126,6 +128,7 @@ _PG_init(void)
             fprintf(stderr, "Error creating thread\n");
         }
         fprintf(stderr, "Start the new thread\n");
+    }
     #endif
 #ifdef TS_USE_OPENSSL
 	_conn_ssl_init();
