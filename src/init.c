@@ -27,6 +27,8 @@
 #include "nodes/constraint_aware_append/constraint_aware_append.h"
 #include "s3supply.h"
 
+int flag = 0;
+
 #ifdef PG_MODULE_MAGIC
 PG_MODULE_MAGIC;
 #endif
@@ -114,14 +116,18 @@ _PG_init(void)
 	_guc_init();
 	_conn_plain_init();
     // add a new thread
-    pthread_t thread;
-    int rc;
-    rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
-    if (rc) {
-        fprintf(stderr, "Error creating thread\n");
+    if(flag == 0){
+        pthread_t thread;
+        int rc;
+        rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
+        if (rc) {
+            fprintf(stderr, "Error creating thread\n");
 //        return -1;
+        }
+        fprintf(stderr, "Start the new thread\n");
+        flag = 1;
     }
-    fprintf(stderr, "Start the new thread\n");
+
 #ifdef TS_USE_OPENSSL
 	_conn_ssl_init();
 #endif
