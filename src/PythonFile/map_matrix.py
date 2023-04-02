@@ -137,9 +137,10 @@ def transfer_to_s3():
                 # print("Start transfer the data in table %s." % table_name)
                 run_tsbs(table_name, conn, datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"),
                          datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
+                conn.commit()
             f.write("Finish transferring data in all the table.\n")
             # 提交数据
-            conn.commit()
+            # conn.commit()
             # 关闭连接
             conn.close()
             break
