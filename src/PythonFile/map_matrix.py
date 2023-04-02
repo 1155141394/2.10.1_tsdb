@@ -123,6 +123,7 @@ def transfer_to_s3():
         return
     else:
         file = open("/var/lib/postgresql/first.txt", 'w')
+        file.write("Create outpyt.txt\n")
         file.close()
 
         with open('/var/lib/postgresql/output.txt','a') as f:
