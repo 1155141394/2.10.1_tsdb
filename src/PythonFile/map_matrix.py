@@ -118,18 +118,18 @@ def run_tsbs(table_name, conn, begin_t, end_t):
 
 
 def transfer_to_s3():
-    with open('/var/lib/postgresql/output.txt','w') as f:
+    with open('/var/lib/postgresql/output.txt','a') as f:
         while True:
             now = datetime.datetime.now()
             # if now.hour & 1 == 0 and now.minute == 0:
             conn = psycopg2.connect(
                 database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
             )
-            f.write("Connect the database");
+            f.write("Connect the database")
             start_time = now + datetime.timedelta(hours=-2)
             end_time = now
             table_names = get_table_name(conn)
-            datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S")
+            f.write(datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"))
             for table_name in table_names:
                 f.write("Start transfer the data in table %s." % table_name)
                 # print("Start transfer the data in table %s." % table_name)
