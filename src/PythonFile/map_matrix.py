@@ -141,7 +141,7 @@ def transfer_to_s3():
                 if now.minute % 5 == 0:
                     f.write("Connect the database\n")
                     # start_time = now + datetime.timedelta(hours=-2)
-                    start_time = now + datetime.timedelta(minute=-5)
+                    start_time = now + datetime.timedelta(minutes=-5)
                     end_time = now
                     table_names = get_table_name(conn)
                     f.write(datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"))
