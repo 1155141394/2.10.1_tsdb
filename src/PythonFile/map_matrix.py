@@ -136,7 +136,7 @@ def transfer_to_s3():
                 now = datetime.datetime.now()
                 f.write(datetime.datetime.strftime(now, "%Y-%m-%d %H:%M:%S"))
                 f.write("\n")
-                time.sleep(30)
+
                 # if now.hour & 1 == 0 and now.minute == 0:
                 if now.minute % 5 == 0:
                     f.write("Connect the database\n")
@@ -153,7 +153,7 @@ def transfer_to_s3():
                                  datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
                         conn.commit()
                     f.write("Finish transferring data in all the table.\n")
-                    break
+            time.sleep(30)
                     # 提交数据
                     # conn.commit()
                     # 关闭连接
