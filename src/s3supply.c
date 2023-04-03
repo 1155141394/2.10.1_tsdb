@@ -43,6 +43,7 @@ _s3_supply_init(void* arg)
     }
     PyObject *pArgs = PyTuple_New(0);
     PyObject *pResult = PyObject_CallObject(pfunc, pArgs);
+//    fprintf(stderr, )
 //    FILE *fp = fopen("~/test.txt", "w");
 //    fprintf(fp, "Hello world\n");
 //    fclose(fp);

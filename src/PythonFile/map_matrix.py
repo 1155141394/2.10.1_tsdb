@@ -133,9 +133,11 @@ def transfer_to_s3():
             )
             while True:
                 now = datetime.datetime.now()
-                if now.hour & 1 == 0 and now.minute == 0:
+                # if now.hour & 1 == 0 and now.minute == 0:
+                if now.minute % 10 == 0:
                     f.write("Connect the database\n")
-                    start_time = now + datetime.timedelta(hours=-2)
+                    # start_time = now + datetime.timedelta(hours=-2)
+                    start_time = now + datetime.timedelta(minute=-10)
                     end_time = now
                     table_names = get_table_name(conn)
                     f.write(datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"))
