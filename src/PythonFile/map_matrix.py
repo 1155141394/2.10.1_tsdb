@@ -150,6 +150,7 @@ def transfer_to_s3():
                 else:
                     f.write("Wait\n")
             time.sleep(10)
+            print("Continue while loop.\n")
 
         conn.close()
 
