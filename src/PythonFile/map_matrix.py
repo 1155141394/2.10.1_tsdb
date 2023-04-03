@@ -126,12 +126,13 @@ def transfer_to_s3():
         file.write("First run.\n")
         file.close()
 
-        conn = psycopg2.connect(
-            database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
-        )
+
         while True:
             now = datetime.datetime.now()
             if now.hour % 2 == 0 and now.minute == 0:
+                conn = psycopg2.connect(
+                    database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
+                )
                 with open('/var/lib/postgresql/log/output.txt','a') as f:
                     f.write("Connect the database\n")
                     start_time = now + datetime.timedelta(hours=-2)
@@ -145,6 +146,7 @@ def transfer_to_s3():
                                  datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
                         conn.commit()
                     f.write("Finish transferring data in all the table.\n")
+                conn.close()
                 time.sleep(60)
 
             else:
@@ -152,7 +154,7 @@ def transfer_to_s3():
                     f.write("Wait\n")
                 time.sleep(5)
 
-        conn.close()
+
 
 
 
