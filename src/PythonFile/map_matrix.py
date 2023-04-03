@@ -160,18 +160,18 @@ def transfer_to_s3():
         conn.close()
 
 
-
-if __name__ == "__main__":
-    inputs = sys.argv
-    conn = psycopg2.connect(
-        database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
-    )
-    table_names = get_table_name(conn)
-    # print(table_names)
-    for table_name in table_names:
-        # print("Start transfer the data in table %s." % table_name)
-        run_tsbs(table_name, conn, "2023-01-01 22:00:00", "2023-01-02 00:00:00")
-    # 提交数据
-    conn.commit()
-    # 关闭连接
-    conn.close()
+#
+# if __name__ == "__main__":
+#     inputs = sys.argv
+#     conn = psycopg2.connect(
+#         database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
+#     )
+#     table_names = get_table_name(conn)
+#     # print(table_names)
+#     for table_name in table_names:
+#         # print("Start transfer the data in table %s." % table_name)
+#         run_tsbs(table_name, conn, "2023-01-01 22:00:00", "2023-01-02 00:00:00")
+#     # 提交数据
+#     conn.commit()
+#     # 关闭连接
+#     conn.close()
