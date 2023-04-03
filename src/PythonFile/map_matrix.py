@@ -126,13 +126,16 @@ def transfer_to_s3():
         file.write("First run.\n")
         file.close()
 
-        with open('/var/lib/postgresql/log/output.txt','a') as f:
-            # f.write("Create output.txt\n")
-            conn = psycopg2.connect(
-                database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
-            )
-            while True:
+        # with open('/var/lib/postgresql/log/output.txt','a') as f:
+        # f.write("Create output.txt\n")
+        conn = psycopg2.connect(
+            database="benchmark", user="postgres", password="1234", host="localhost", port="5432"
+        )
+        while True:
+            with open('/var/lib/postgresql/log/output.txt','a') as f:
                 now = datetime.datetime.now()
+                f.write(now)
+                f.write("\n")
                 # if now.hour & 1 == 0 and now.minute == 0:
                 if now.minute % 5 == 0:
                     f.write("Connect the database\n")
@@ -149,10 +152,11 @@ def transfer_to_s3():
                                  datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
                         conn.commit()
                     f.write("Finish transferring data in all the table.\n")
+                    break
                     # 提交数据
                     # conn.commit()
                     # 关闭连接
-            conn.close()
+        conn.close()
 
 
 
