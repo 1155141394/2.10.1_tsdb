@@ -134,8 +134,8 @@ def transfer_to_s3():
         # while True:
         with open('/var/lib/postgresql/log/output.txt','a') as f:
             now = datetime.datetime.now()
-            f.write(datetime.datetime.strftime(now, "%Y-%m-%d %H:%M:%S"))
-            f.write("\n")
+            # f.write(datetime.datetime.strftime(now, "%Y-%m-%d %H:%M:%S"))
+            # f.write("\n")
 
                 # if now.hour & 1 == 0 and now.minute == 0:
                 # if now.minute % 5 == 0:
