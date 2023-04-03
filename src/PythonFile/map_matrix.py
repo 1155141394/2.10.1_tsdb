@@ -149,7 +149,7 @@ def transfer_to_s3():
                     time.sleep(60)
                 else:
                     f.write("Wait\n")
-            time.sleep(30)
+            time.sleep(10)
 
         conn.close()
 
