@@ -136,6 +136,7 @@ def transfer_to_s3():
                 now = datetime.datetime.now()
                 f.write(datetime.datetime.strftime(now, "%Y-%m-%d %H:%M:%S"))
                 f.write("\n")
+                time.sleep(30)
                 # if now.hour & 1 == 0 and now.minute == 0:
                 if now.minute % 5 == 0:
                     f.write("Connect the database\n")
