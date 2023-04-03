@@ -152,6 +152,9 @@ def transfer_to_s3():
                         conn.commit()
                     f.write("Finish transferring data in all the table.\n")
                     time.sleep(60)
+                else:
+                    f.write(datetime.datetime.strftime(now, "%Y-%m-%d %H:%M:%S"))
+                    time.sleep(10)
 
                     # 提交数据
                     # conn.commit()
