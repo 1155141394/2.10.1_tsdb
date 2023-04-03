@@ -150,8 +150,8 @@ def transfer_to_s3():
                         run_tsbs(table_name, conn, datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"),
                                  datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
                         conn.commit()
+                    f.write("Finish transferring data in all the table.\n")
                     time.sleep(60)
-                f.write("Finish transferring data in all the table.\n")
 
                     # 提交数据
                     # conn.commit()
