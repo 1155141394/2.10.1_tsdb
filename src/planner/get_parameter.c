@@ -5,6 +5,8 @@
 #include <lib/stringinfo.h>
 #include <Python.h>
 
+using namespace std;
+
 
 void
 trans_parameter(char* str1, char* str2, char* str3);
