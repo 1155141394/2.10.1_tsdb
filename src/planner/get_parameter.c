@@ -4,7 +4,7 @@
 #include <nodes/parsenodes.h>
 #include <lib/stringinfo.h>
 #include <Python.h>
-#include <iostream>
+
 
 void
 trans_parameter(char* str1, char* str2, char* str3);
@@ -100,7 +100,7 @@ query_to_string(Query *query)
 
         char *table_name_str = table_name.data;
         fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
-    }catch(const char* msg){
+    }catch(exception &e){
         fprintf(stderr, "Initial query.");
         return ;
     }
