@@ -4,6 +4,7 @@
 #include <nodes/parsenodes.h>
 #include <lib/stringinfo.h>
 #include <Python.h>
+#include "tcop/deparse_utility.h"
 
 
 
@@ -83,7 +84,6 @@ query_to_string(Query *query)
     foreach (lc, query->targetList)
     {
         TargetEntry *te = (TargetEntry *) lfirst(lc);
-        fprintf(stderr, "resname: %s\n-------------------------\n", te->resname);
         appendStringInfoString(&attr_name, te->resname);
         ListCell *next = lnext(query->targetList, lc);
         if (next != NULL) {
@@ -105,17 +105,20 @@ query_to_string(Query *query)
     fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
 
 
+    char *where_clause_str;
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
-//        appendStringInfoString(&buf, " WHERE ");
+        // 创建一个新的 ParseState 以传递给 process_where_clause
+        pstate = make_parsestate(NULL);
         Node *quals = query->jointree->quals;
-        char *quals_str = nodeToString(quals);
-        appendStringInfoString(&where_part, quals_str);
-        pfree(quals_str);
+        where_clause_str = deparse_expression(quals, pstate, false, false);
+//        char *quals_str = nodeToString(quals);
+//        appendStringInfoString(&where_part, quals_str);
+//        pfree(quals_str);
     }
 
-    char *where_part_str = where_part.data;
-    fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
+//    char *where_part_str = where_part.data;
+    fprintf(stderr, "Where part: %s\n-------------------------\n", where_clause_str);
 //    if (query->limitCount > 0)
 //        appendStringInfo(&buf, " LIMIT %d", query->limitCount);
 
