@@ -4,10 +4,10 @@
 #include <nodes/parsenodes.h>
 #include <lib/stringinfo.h>
 #include <Python.h>
-#include "tcop/deparse_utility.h"
-#include "catalog/namespace.h"
-#include "utils/lsyscache.h"
-#include "utils/syscache.h"
+#include <tcop/deparse_utility.h>
+#include <catalog/namespace.h>
+#include <utils/lsyscache.h>
+#include <utils/syscache.h>
 
 
 
