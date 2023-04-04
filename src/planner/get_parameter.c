@@ -4,11 +4,6 @@
 #include <nodes/parsenodes.h>
 #include <lib/stringinfo.h>
 #include <Python.h>
-#include <tcop/deparse_utility.h>
-#include <catalog/namespace.h>
-#include <utils/lsyscache.h>
-#include <utils/syscache.h>
-#include <parser/parse_node.h>
 
 
 
@@ -109,23 +104,17 @@ query_to_string(Query *query)
     fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
 
 
-    char *where_clause_str;
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
-        ParseState *pstate;
-        // 创建一个新的 ParseState 以传递给 process_where_clause
-        pstate = make_parsestate(NULL);
+//        appendStringInfoString(&buf, " WHERE ");
         Node *quals = query->jointree->quals;
-        where_clause_str = deparse_expression(quals, pstate, false, false);
-        // 释放 ParseState 结构体
-        free_parsestate(pstate);
-//        char *quals_str = nodeToString(quals);
-//        appendStringInfoString(&where_part, quals_str);
-//        pfree(quals_str);
+        char *quals_str = nodeToString(quals);
+        appendStringInfoString(&where_part, quals_str);
+        pfree(quals_str);
     }
 
-//    char *where_part_str = where_part.data;
-    fprintf(stderr, "Where part: %s\n-------------------------\n", where_clause_str);
+    char *where_part_str = where_part.data;
+    fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
 //    if (query->limitCount > 0)
 //        appendStringInfo(&buf, " LIMIT %d", query->limitCount);
 
