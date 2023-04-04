@@ -91,20 +91,19 @@ query_to_string(Query *query)
     }
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
     char *attr_name_str = attr_name.data;
-//    char *attr_name_str = (char *) query->targetList->elements[0].ptr_value;
-//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[0].ptr_value);
-//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[1].ptr_value);
-//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[2].ptr_value);
-//    fprintf(stderr, "Attribute names: %s\n-------------------------\n", (char *)query->targetList->elements[3].ptr_value);
     fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
-//    appendStringInfoString(&buf, " FROM ");
+    try
+    {
+        RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
+        appendStringInfoString(&table_name, rte->eref->aliasname);
 
-    RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
-    appendStringInfoString(&table_name, rte->eref->aliasname);
+        char *table_name_str = table_name.data;
+        fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
+    }catch(const char* msg){
+        fprintf(stderr, "Initial query.");
+        return ;
+    }
 
-//    fprintf(stderr, "Finish adding table names!!!!!\n");
-    char *table_name_str = table_name.data;
-    fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
 //        appendStringInfoString(&buf, " WHERE ");
@@ -113,8 +112,7 @@ query_to_string(Query *query)
         appendStringInfoString(&where_part, quals_str);
         pfree(quals_str);
     }
-//
-//    fprintf(stderr, "Finish adding where part!!!!!\n");
+
     char *where_part_str = where_part.data;
     fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
 //    if (query->limitCount > 0)
