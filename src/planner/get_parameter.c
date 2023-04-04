@@ -5,6 +5,9 @@
 #include <lib/stringinfo.h>
 #include <Python.h>
 #include "tcop/deparse_utility.h"
+#include "catalog/namespace.h"
+#include "utils/lsyscache.h"
+#include "utils/syscache.h"
 
 
 
@@ -108,6 +111,7 @@ query_to_string(Query *query)
     char *where_clause_str;
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
+        ParseState *pstate;
         // 创建一个新的 ParseState 以传递给 process_where_clause
         pstate = make_parsestate(NULL);
         Node *quals = query->jointree->quals;
