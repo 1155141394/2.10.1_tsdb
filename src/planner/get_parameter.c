@@ -8,6 +8,7 @@
 #include <catalog/namespace.h>
 #include <utils/lsyscache.h>
 #include <utils/syscache.h>
+#include <parser/parse_node.h>
 
 
 
