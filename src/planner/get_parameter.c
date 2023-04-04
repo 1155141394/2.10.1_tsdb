@@ -5,7 +5,6 @@
 #include <lib/stringinfo.h>
 #include <Python.h>
 
-using namespace std;
 
 
 void
@@ -95,17 +94,16 @@ query_to_string(Query *query)
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
     char *attr_name_str = attr_name.data;
     fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
-    try
-    {
-        RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
-        appendStringInfoString(&table_name, rte->eref->aliasname);
 
-        char *table_name_str = table_name.data;
-        fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
-    }catch(exception &e){
-        fprintf(stderr, "Initial query.");
-        return ;
+    RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
+    if(rte == NULL){
+        return;
     }
+    appendStringInfoString(&table_name, rte->eref->aliasname);
+
+    char *table_name_str = table_name.data;
+    fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
+
 
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
