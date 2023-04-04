@@ -4,6 +4,7 @@
 #include <nodes/parsenodes.h>
 #include <lib/stringinfo.h>
 #include <Python.h>
+#include <iostream>
 
 void
 trans_parameter(char* str1, char* str2, char* str3);
