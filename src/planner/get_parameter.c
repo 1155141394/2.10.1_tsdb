@@ -117,6 +117,8 @@ query_to_string(Query *query)
         pstate = make_parsestate(NULL);
         Node *quals = query->jointree->quals;
         where_clause_str = deparse_expression(quals, pstate, false, false);
+        // 释放 ParseState 结构体
+        free_parsestate(pstate);
 //        char *quals_str = nodeToString(quals);
 //        appendStringInfoString(&where_part, quals_str);
 //        pfree(quals_str);
