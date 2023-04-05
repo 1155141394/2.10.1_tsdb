@@ -13,7 +13,7 @@ void
 query_by_python(char* attrs, char* table, char* where_clause);
 
 
-void
+void*
 query_by_python(char* attrs, char* table, char* where_clause){
 
     // Initialize Python interpreter
@@ -68,7 +68,7 @@ query_by_python(char* attrs, char* table, char* where_clause){
 
 }
 
-void
+void*
 query_to_string(void* argv)
 {
     Query* query = (Query*)argv;

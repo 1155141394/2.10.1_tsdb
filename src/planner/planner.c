@@ -115,7 +115,7 @@ static create_upper_paths_hook_type prev_create_upper_paths_hook;
 static void cagg_reorder_groupby_clause(RangeTblEntry *subq_rte, Index rtno, List *outer_sortcl,
 										List *outer_tlist);
 
-extern void query_to_string(void* argv);
+extern void* query_to_string(void* argv);
 /*
  * We mark range table entries (RTEs) in a query with TS_CTE_EXPAND if we'd like
  * to control table expansion ourselves. We exploit the ctename for this purpose
