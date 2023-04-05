@@ -113,7 +113,7 @@ query_to_string(Query* query)
         char *quals_str = nodeToString(quals);
         appendStringInfoString(&where_part, quals_str);
         pfree(quals_str);
-        *where_part_str = where_part.data;
+        where_part_str = where_part.data;
     }
 
 
