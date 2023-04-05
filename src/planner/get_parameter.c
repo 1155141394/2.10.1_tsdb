@@ -105,7 +105,7 @@ query_to_string(Query* query)
     appendStringInfoString(&table_name, rte->eref->aliasname);
 
     char *table_name_str = table_name.data;
-    char *where_part_str;
+    char *where_part_str = "";
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
 //        appendStringInfoString(&buf, " WHERE ");
