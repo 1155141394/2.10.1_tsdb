@@ -7,8 +7,8 @@
 
 
 
-void*
-query_to_string(void* argv);
+void
+query_to_string(Query* query);
 void
 query_by_python(char* attrs, char* table, char* where_clause);
 
@@ -68,13 +68,11 @@ query_by_python(char* attrs, char* table, char* where_clause){
 
 }
 
-void*
-query_to_string(void* argv)
+void
+query_to_string(Query* query)
 {
-    pthread_detach(pthread_self());
-    Query* query = (Query*)argv;
-    fprintf(stderr, "Thread detach\n");
 
+    fprintf(stderr, "Thread detach\n");
     StringInfoData attr_name;
     initStringInfo(&attr_name);
 
