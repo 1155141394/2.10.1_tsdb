@@ -200,7 +200,9 @@ def find_id(tags_list,attr_list):
     return tsid_list
 
 
-def query(query_dict):
+def query(attr,table,input):
+    query_dict = parse_query(attr,table,input)
+
     begin_time = time.time()
 
     where_clause = query_dict['where_clause']
