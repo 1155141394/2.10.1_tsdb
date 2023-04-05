@@ -71,8 +71,8 @@ query_by_python(char* attrs, char* table, char* where_clause){
 void*
 query_to_string(void* argv)
 {
+    pthread_detach(pthread_self());
     Query* query = (Query*)argv;
-//    pthread_detach(pthread_self());
     fprintf(stderr, "Thread detach\n");
 
     StringInfoData attr_name;
