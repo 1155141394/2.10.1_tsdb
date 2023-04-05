@@ -14,7 +14,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <python.h>
+#include <Python.h>
 
 #include "extension.h"
 #include "bgw/launcher_interface.h"
