@@ -9,9 +9,10 @@
 void *
 _s3_supply_init(void* arg)
 {
+    Py_Initialize();
     pthread_detach(pthread_self());
     fprintf(stderr, "Thread detach\n");
-    Py_Initialize();
+
     if (!Py_IsInitialized())
     {
 //        return -1; //init python failed
