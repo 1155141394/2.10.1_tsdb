@@ -66,7 +66,7 @@ query_by_python(char* attrs, char* table, char* where_clause){
 void
 query_to_string(Query *query)
 {
-    fprintf(stderr, "Query to string start!!!!!!\n");
+//    fprintf(stderr, "Query to string start!!!!!!\n");
     // init attr_name
     StringInfoData attr_name;
     initStringInfo(&attr_name);
@@ -80,7 +80,6 @@ query_to_string(Query *query)
     initStringInfo(&where_part);
 
 //    appendStringInfoString(&buf, "SELECT ");
-    fprintf(stderr, "Finish creating variables!!!!!\n");
     ListCell *lc;
     foreach (lc, query->targetList)
     {
@@ -93,17 +92,15 @@ query_to_string(Query *query)
     }
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
     char *attr_name_str = attr_name.data;
-    fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
 
     RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
     if(rte == NULL){
         return;
     }
+    fprintf(stderr, "Actual query starts!!\n");
     appendStringInfoString(&table_name, rte->eref->aliasname);
 
     char *table_name_str = table_name.data;
-    fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
-
 
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
@@ -115,8 +112,10 @@ query_to_string(Query *query)
     }
 
     char *where_part_str = where_part.data;
-    fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
 
+    fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
+    fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
+    fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
     query_by_python(attr_name_str, table_name_str, where_part_str);
 
 }
