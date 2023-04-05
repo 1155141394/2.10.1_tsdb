@@ -4,8 +4,13 @@ import csv
 from hash import *
 import subprocess
 import json
+from datetime import date, datetime, timedelta
+# import datetime
+import re
+import struct
 
 META_FOLDER = '/var/lib/postgresql/CS_FYP/meta/'
+
 
 def compress_array(arr):
     """将一个二维的数组压缩为一个一维的数组，并返回一个元组，包含压缩后的数组和压缩前后数组的行列数"""
@@ -32,8 +37,8 @@ def compress_array(arr):
 def decompress_array(compressed_arr):
     compressed_arr = list(map(int, compressed_arr))
     """将一个压缩后的数组解压缩为原始的二维数组"""
-    rows = compressed_arr[len(compressed_arr)-2] # 获取原始数组的行列数
-    cols = compressed_arr[len(compressed_arr)-1]
+    rows = compressed_arr[len(compressed_arr) - 2]  # 获取原始数组的行列数
+    cols = compressed_arr[len(compressed_arr) - 1]
     compressed_arr = compressed_arr[:-2]
     decompressed_arr = np.zeros((rows, cols), dtype=int)  # 创建一个全零的二维数组
     i = 0
@@ -49,6 +54,7 @@ def decompress_array(compressed_arr):
             j -= cols
     return decompressed_arr.tolist()
 
+
 def txt_to_list(filename):
     f = open(filename, 'r')
     out = f.read()
@@ -57,6 +63,7 @@ def txt_to_list(filename):
     res = res.strip(']')
     res = res.split(',')
     return res
+
 
 def time_index(start_t, end_t):
     hours = []
@@ -217,6 +224,165 @@ def get_col_name(conn, table_name):
     return res
 
 
+def byte_to_time(byte_data):
+    byte_data_new = []
+    for i in byte_data:
+        if i < 0:
+            i += 256
+        byte_data_new.append(i)
+    binary_data = bytes(byte_data_new)
+    microseconds = struct.unpack('q', binary_data)[0]
+
+    # 计算 Unix 纪元的日期时间
+    epoch = datetime(2000, 1, 1)
+    timestamp = epoch + timedelta(hours=8, microseconds=microseconds)
+
+    # 将日期时间格式化为字符串
+    formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+    return formatted_timestamp
+
+
+def byte_to_int(byte_data):
+    byte_data_new = []
+    for i in byte_data:
+        if i < 0:
+            i += 256
+        byte_data_new.append(i)
+    byte_stream = bytes(byte_data_new)
+    value = struct.unpack("<q", byte_stream)[0]
+    return value
+
+def byte_to_str(byte_data):
+    byte_data_new = []
+    for i in byte_data:
+        if i < 0:
+            i += 256
+        byte_data_new.append(i)
+    result = ''.join(chr(int(num)) for num in byte_data_new if int(num) > 0)
+
+    return result[1:]
+
+
+
+def parse_query(attr, table, where_input):
+
+    # parse attribute:
+    attrs = attr.split(',')
+    attrs_res = []
+    for i in attrs:
+        if i == 'tags_id' or i == 'hostname':
+            continue
+        else:
+            attrs_res.append(i)
+
+    # parse tabel
+
+    cpu_col = {1: 'time', 2: 'tags_id', 3: 'hostname', 4: 'usage_user', 5: 'usage_system', 6: 'usage_idle',
+               7: 'usage_nice',
+               8: 'usage_iowait', 9: 'usage_irq', 10: 'usage_softirq', 11: 'usage_steal', 12: 'usage_guest',
+               13: 'usage_guest_nice', 14: 'additional_tags'}
+
+
+    # parse where part
+
+    # operation dictionary (oid: operation)
+    opno_dict = {'96': '=', '97': '<', '521': '>', '523': '<=', '525': '>=',  # int4
+                 '1320': '=', '1322': '<', '1323': '<=', '1324': '>', '1325': '>=',  # timestamptz
+                 '98': '=',  #text
+                 '674': '>'
+                 }
+
+    # variable type dictionary
+    var_oid_dict = {'23': 'int4', '1184': 'timestamptz', '25': 'text', '701': 'float8'}
+
+    BoolEXPR = []
+    opno_list = []
+    col_indx_list = []
+    vartype_list = []
+    byte_list = []
+    value_list = []
+
+    split_res = where_input.split(' ')
+    # print(split_res)
+    for indx, word in enumerate(split_res):
+
+        # get and / or
+        if "BOOLEXPR" in word:
+            BoolEXPR.append(split_res[indx + 2])
+
+        # get operations in the where part
+        if "opno" in word:
+            opexpr = split_res[indx + 1]
+            opno_list.append(opno_dict[opexpr])
+
+        # get attribution in which column
+        if "varattnosyn" in word:
+            col = split_res[indx + 1]
+            col_indx_list.append(int(col))
+
+        # get variable type
+        if "vartype" in word:
+            vartype = split_res[indx + 1]
+            vartype_list.append(var_oid_dict[vartype])
+
+        # get value
+        if "constvalue" in word:
+            length = int(split_res[indx+1]) if int(split_res[indx+1]) > 8 else 8
+            data = split_res[indx + 3: indx + 3 + length]
+            # print(data)
+            byte_list.append([int(i) for i in data])
+
+    where_len = len(opno_list)
+
+    for i in range(where_len):
+        if vartype_list[i] == "timestamptz":
+            value_list.append(byte_to_time(byte_list[i]))
+
+        elif vartype_list[i] == "int4":
+            value_list.append(byte_to_int(byte_list[i]))
+
+        elif vartype_list[i] == 'text':
+            value_list.append(byte_to_str(byte_list[i]))
+
+        elif vartype_list[i] == 'float8':
+            value_list.append(byte_to_int(byte_list[i]))
+
+
+    # print(BoolEXPR)
+    # print(opno_list)
+    # print(col_indx_list)
+    # print(vartype_list)
+    # print(byte_list)
+    # print(value_list)
+
+    # put all the need things into a dictionary
+    res = {'where_clause': [], 'conn': [], 'tsid': [], 'attr': attrs_res}
+    flag = 0
+    for i in range(where_len):
+        if cpu_col[col_indx_list[i]] == 'tags_id' or cpu_col[col_indx_list[i]] == 'hostname':
+            res['tsid'].append(str(value_list[i]))
+            flag = 1
+            # res['conn'].pop()
+        else:
+            if vartype_list[i] == "float8":
+                tmp = "CAST("+ cpu_col[col_indx_list[i]] + ' AS FLOAT) ' + opno_list[i] + " " + str(value_list[i])
+            else:
+                tmp = cpu_col[col_indx_list[i]] + ' ' + opno_list[i] + " '" + str(value_list[i]) + "'"
+            res['where_clause'].append(tmp)
+            if flag == 1:
+                flag = 0
+            elif i < where_len - 1:
+                res['conn'].append(BoolEXPR[0])
+
+
+    # print(res['where_clause'])
+    # print(res['conn'])
+    # print(res['tsid'])
+    # print(res['attr'])
+    return res
+
+
 def get_table_name(conn):
     res = []
     cur = conn.cursor()
@@ -230,4 +396,8 @@ def get_table_name(conn):
     return res
 
 
-
+# if __name__ == '__main__':
+#     attr = 'time,tags_id,hostname,usage_user,usage_system,usage_idle,usage_nice,usage_iowait,usage_irq,usage_softirq,usage_steal,usage_guest,usage_guest_nice,additional_tags'
+#     table = 'cpu'
+#     input = "{BOOLEXPR :boolop and :args ({OPEXPR :opno 1324 :opfuncid 1157 :opresulttype 16 :opretset false :opcollid 0 :inputcollid 0 :args ({VAR :varno 1 :varattno 1 :vartype 1184 :vartypmod -1 :varcollid 0 :varlevelsup 0 :varnosyn 1 :varattnosyn 1 :location 24} {CONST :consttype 1184 :consttypmod -1 :constcollid 0 :constlen 8 :constbyval true :constisnull false :location 31 :constvalue 8 [ 0 36 -8 -70 78 -101 2 0 ]}) :location 29} {OPEXPR :opno 1322 :opfuncid 1154 :opresulttype 16 :opretset false :opcollid 0 :inputcollid 0 :args ({VAR :varno 1 :varattno 1 :vartype 1184 :vartypmod -1 :varcollid 0 :varlevelsup 0 :varnosyn 1 :varattnosyn 1 :location 57} {CONST :consttype 1184 :consttypmod -1 :constcollid 0 :constlen 8 :constbyval true :constisnull false :location 64 :constvalue 8 [ 0 40 99 -81 99 -101 2 0 ]}) :location 62} {OPEXPR :opno 98 :opfuncid 67 :opresulttype 16 :opretset false :opcollid 0 :inputcollid 100 :args ({VAR :varno 1 :varattno 3 :vartype 25 :vartypmod -1 :varcollid 100 :varlevelsup 0 :varnosyn 1 :varattnosyn 3 :location 90} {CONST :consttype 25 :consttypmod -1 :constcollid 100 :constlen -1 :constbyval false :constisnull false :location 99 :constvalue 12 [ 48 0 0 0 104 111 115 116 95 49 51 48 ]}) :location 98} {OPEXPR :opno 96 :opfuncid 65 :opresulttype 16 :opretset false :opcollid 0 :inputcollid 0 :args ({VAR :varno 1 :varattno 2 :vartype 23 :vartypmod -1 :varcollid 0 :varlevelsup 0 :varnosyn 1 :varattnosyn 2 :location 114} {CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location 124 :constvalue 4 [ -127 0 0 0 0 0 0 0 ]}) :location 122} {OPEXPR :opno 674 :opfuncid 297 :opresulttype 16 :opretset false :opcollid 0 :inputcollid 0 :args ({VAR :varno 1 :varattno 5 :vartype 701 :vartypmod -1 :varcollid 0 :varlevelsup 0 :varnosyn 1 :varattnosyn 5 :location 132} {FUNCEXPR :funcid 316 :funcresulttype 701 :funcretset false :funcvariadic false :funcformat 2 :funccollid 0 :inputcollid 0 :args ({CONST :consttype 23 :consttypmod -1 :constcollid 0 :constlen 4 :constbyval true :constisnull false :location 147 :constvalue 4 [ 9 0 0 0 0 0 0 0 ]}) :location -1}) :location 145}) :location 53}"
+#     parse_query(attr, table, input)
