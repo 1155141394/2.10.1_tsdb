@@ -21,42 +21,49 @@ query_by_python(char* attrs, char* table, char* where_clause){
     // Build the name object for the module and function
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append('/var/lib/postgresql/2.10.1_tsdb/src/PythonFile')");
-    PyRun_SimpleString("print('Query start!')");
-    PyObject* moduleName = PyUnicode_FromString("query");
-    PyObject* functionName = PyUnicode_FromString("query");
+
     fprintf(stderr, "Start query function.\n");
     // Import the module
-    PyObject* module = PyImport_Import(moduleName);
-    if (module == NULL) {
-        PyErr_Print();
-        fprintf(stderr, "Failed to import module.\n");
+    PyObject* pmodule = PyImport_Import('query');
+    if (!pmodule)
+    {
+        fprintf(stderr, "cannot find query.py\n");
+//        return -1;
+    }
+    else
+    {
+        fprintf(stderr, "PyImport_ImportModule success\n");
+    }
+
+    PyObject *pfunc = PyObject_GetAttrString(pmodule, "query");
+    if (!pfunc)
+    {
+        fprintf(stderr, "Cannot find func\n");
+        Py_XDECREF(pmodule);
+    }
+    else
+    {
+        fprintf(stderr, "PyObject_GetAttrString success\n");
     }
 
     // Build the argument list
-    PyObject* args = PyTuple_New(3);
-    PyTuple_SetItem(args, 0, PyUnicode_FromString(attrs));
-    PyTuple_SetItem(args, 1, PyUnicode_FromString(table));
-    PyTuple_SetItem(args, 2, PyUnicode_FromString(where_clause));
+    PyObject* pArgs = PyTuple_New(3);
+    PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(attrs));
+    PyTuple_SetItem(pArgs, 1, PyUnicode_FromString(table));
+    PyTuple_SetItem(pArgs, 2, PyUnicode_FromString(where_clause));
 
     // Call the function and get the result
-    PyObject* result = PyObject_CallObject(PyObject_GetAttrString(module, "query"), args);
-    if (result == NULL) {
-        PyErr_Print();
-        fprintf(stderr, "Failed to call function.\n");
-    }
+    PyObject *pResult = PyObject_CallObject(pfunc, pArgs);
 
-    // Print the result
-    printf("Result: %s\n", PyUnicode_AsUTF8(result));
 
-    // Clean up
-    Py_DECREF(args);
-    Py_DECREF(result);
-    Py_DECREF(moduleName);
-    Py_DECREF(functionName);
-    Py_DECREF(module);
+    Py_XDECREF(pmodule);
+    Py_XDECREF(pfunc);
+    Py_XDECREF(pArgs);
+    Py_XDECREF(pResult);
 
-    // Shut down Python interpreter
     Py_Finalize();
+
+    pthread_exit(NULL);
 
 }
 
