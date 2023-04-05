@@ -1,3 +1,8 @@
+# include Python.h 环境
+include_directories("/usr/include/python3.10")
+# 添加动态库
+LINK_DIRECTORIES("/usr/lib/python3.10/config-3.10-x86_64-linux-gnu")
+
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/planner.c
     ${CMAKE_CURRENT_SOURCE_DIR}/add_hashagg.c
@@ -9,3 +14,5 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/space_constraint.c
     ${CMAKE_CURRENT_SOURCE_DIR}/get_parameter.c    )
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
+
+target_link_libraries(${PROJECT_NAME} -lpython3.10)
