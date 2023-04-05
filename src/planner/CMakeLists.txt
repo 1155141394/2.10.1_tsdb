@@ -15,4 +15,3 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/get_parameter.c    )
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} -lpython3.10)
