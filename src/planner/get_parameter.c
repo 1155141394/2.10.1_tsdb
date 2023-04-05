@@ -15,8 +15,9 @@ query_by_python(char* attrs, char* table, char* where_clause);
 void
 query_by_python(char* attrs, char* table, char* where_clause){
     // Initialize Python interpreter
-    Py_Initialize();
     fprintf(stderr, "Start query function.\n");
+    Py_Initialize();
+
     // Build the name object for the module and function
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append('/var/lib/postgresql/2.10.1_tsdb/src/PythonFile')");
