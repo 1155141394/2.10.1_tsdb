@@ -24,7 +24,7 @@ query_by_python(char* attrs, char* table, char* where_clause){
     PyRun_SimpleString("print('Query start!')");
     PyObject* moduleName = PyUnicode_FromString("query");
     PyObject* functionName = PyUnicode_FromString("query");
-
+    fprintf(stderr, "Start query function.\n");
     // Import the module
     PyObject* module = PyImport_Import(moduleName);
     if (module == NULL) {
