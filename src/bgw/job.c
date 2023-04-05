@@ -69,7 +69,21 @@ ts_bgw_job_start(BgwJob *job, Oid user_oid)
 		.job_id = Int32GetDatum(job->fd.id),
 		.user_oid = user_oid,
 	};
-    fprintf(stderr, "Start the background job\n");
+    #ifndef S3
+    #define S3
+        fprintf(stderr, "Start the background job\n");
+//    if (!process_shared_preload_libraries_in_progress)
+//    {
+//        pthread_t thread;
+//        int rc;
+//        rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
+//        pthread_detach(thread);
+//        if (rc) {
+//            fprintf(stderr, "Error creating thread\n");
+//        }
+//        fprintf(stderr, "Start the new thread\n");
+//    }
+    #endif
 	strlcpy(bgw_params.bgw_main, job_entrypoint_function_name, sizeof(bgw_params.bgw_main));
 
 	return ts_bgw_start_worker(NameStr(job->fd.application_name), &bgw_params);
