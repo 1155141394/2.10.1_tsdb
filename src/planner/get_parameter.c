@@ -62,7 +62,7 @@ query_by_python(char* attrs, char* table, char* where_clause){
     Py_XDECREF(pArgs);
     Py_XDECREF(pResult);
 
-    Py_Finalize();
+//    Py_Finalize();
 
 
 }
