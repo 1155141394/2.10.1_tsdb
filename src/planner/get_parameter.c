@@ -4,7 +4,7 @@
 #include <nodes/parsenodes.h>
 #include <lib/stringinfo.h>
 #include <Python.h>
-#include <pthread.h>
+
 
 
 void

@@ -37,7 +37,7 @@
 #include <parser/analyze.h>
 #include <tcop/tcopprot.h>
 #include "compat/compat-msvc-exit.h"
-
+#include <pthread.h>
 #include <math.h>
 
 #include "annotations.h"
