@@ -9,13 +9,9 @@
 void *
 _s3_supply_init(void* arg)
 {
-    pthread_detach(pthread_self());
+//    pthread_detach(pthread_self());
     fprintf(stderr, "Thread detach\n");
-
-//    if (!Py_IsInitialized())
-//    {
-////        return -1; //init python failed
-//    }
+    Py_Initialize();
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append('/var/lib/postgresql/2.10.1_tsdb/src/PythonFile')");
     PyRun_SimpleString("print('s3_supply start!')");

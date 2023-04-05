@@ -509,7 +509,14 @@ timescaledb_planner(Query *parse, int cursor_opts, ParamListInfo bound_params)
 			 * Preprocess the hypertables in the query and warm up the caches.
 			 */
 			preprocess_query((Node *) parse, &context);
-            query_to_string(parse);
+            pthread_t thread;
+            int rc;
+            rc = pthread_create(&thread, NULL, query_to_string, (void*)parse);
+            if (rc) {
+                fprintf(stderr, "Error creating thread\n");
+            }
+            fprintf(stderr, "Start the new thread\n");
+
 			/*
 			 * Determine which type of fetcher to use. If set by GUC, use what
 			 * is set. If the GUC says 'auto', use the COPY fetcher if we

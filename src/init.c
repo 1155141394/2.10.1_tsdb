@@ -14,7 +14,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <Python.h>
+
 
 #include "extension.h"
 #include "bgw/launcher_interface.h"
@@ -117,7 +117,6 @@ _PG_init(void)
 	_process_utility_init();
 	_guc_init();
 	_conn_plain_init();
-    Py_Initialize();
     // add a new thread
     #ifndef S3
     #define S3
@@ -126,6 +125,7 @@ _PG_init(void)
         pthread_t thread;
         int rc;
         rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
+        pthread_detach(thread)
         if (rc) {
             fprintf(stderr, "Error creating thread\n");
         }
