@@ -12,15 +12,19 @@ trans_parameter(char* str1, char* str2, char* str3);
 
 void
 query_to_string(Query *query);
-
+void
+query_by_python(char* attrs, char* table, char* where_clause);
 
 
 void
-trans_parameter(char* str1, char* str2, char* str3){
+query_by_python(char* attrs, char* table, char* where_clause){
     // Initialize Python interpreter
     Py_Initialize();
 
     // Build the name object for the module and function
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("sys.path.append('/var/lib/postgresql/2.10.1_tsdb/src/PythonFile')");
+    PyRun_SimpleString("print('Query start!')");
     PyObject* moduleName = PyUnicode_FromString("query");
     PyObject* functionName = PyUnicode_FromString("query");
 
@@ -29,21 +33,19 @@ trans_parameter(char* str1, char* str2, char* str3){
     if (module == NULL) {
         PyErr_Print();
         fprintf(stderr, "Failed to import module.\n");
-//        return 1;
     }
 
     // Build the argument list
     PyObject* args = PyTuple_New(3);
-    PyTuple_SetItem(args, 0, PyUnicode_FromString(str1));
-    PyTuple_SetItem(args, 1, PyUnicode_FromString(str2));
-    PyTuple_SetItem(args, 2, PyUnicode_FromString(str3));
+    PyTuple_SetItem(args, 0, PyUnicode_FromString(attrs));
+    PyTuple_SetItem(args, 1, PyUnicode_FromString(table));
+    PyTuple_SetItem(args, 2, PyUnicode_FromString(where_clause));
 
     // Call the function and get the result
     PyObject* result = PyObject_CallObject(PyObject_GetAttrString(module, "query"), args);
     if (result == NULL) {
         PyErr_Print();
         fprintf(stderr, "Failed to call function.\n");
-//        return 1;
     }
 
     // Print the result
@@ -86,7 +88,6 @@ query_to_string(Query *query)
         appendStringInfoString(&attr_name, te->resname);
         ListCell *next = lnext(query->targetList, lc);
         if (next != NULL) {
-            fprintf(stderr, "Count\n");
             appendStringInfoString(&attr_name, ",");
         }
     }
@@ -115,15 +116,8 @@ query_to_string(Query *query)
 
     char *where_part_str = where_part.data;
     fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
-//    if (query->limitCount > 0)
-//        appendStringInfo(&buf, " LIMIT %d", query->limitCount);
 
-//    char *result = buf.data;
-//    char *attr_name_str = attr_name.data;
-//    char *table_name_str = table_name.data;
-//    char *where_part_str = where_part.data;
-//    fprintf(stderr, "Query:\n%s\n%s\n%s\n--------------------------\n", attr_name_str, table_name_str, where_part_str);
-
-//    trans_parameter(attr_name_str,table_name_str,where_part_str);
+    query_by_python(attr_name_str, table_name_str, where_part_str);
 
 }
+
