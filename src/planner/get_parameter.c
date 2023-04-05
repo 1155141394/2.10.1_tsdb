@@ -105,7 +105,7 @@ query_to_string(Query* query)
     appendStringInfoString(&table_name, rte->eref->aliasname);
 
     char *table_name_str = table_name.data;
-
+    char *where_part_str;
     if (query->jointree != NULL && query->jointree->quals != NULL)
     {
 //        appendStringInfoString(&buf, " WHERE ");
@@ -113,12 +113,11 @@ query_to_string(Query* query)
         char *quals_str = nodeToString(quals);
         appendStringInfoString(&where_part, quals_str);
         pfree(quals_str);
-    }
-    if(where_part == NULL){
-        return;
+        *where_part_str = where_part.data;
     }
 
-    char *where_part_str = where_part.data;
+
+
 
     fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
     fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
