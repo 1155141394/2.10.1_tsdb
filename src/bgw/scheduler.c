@@ -41,6 +41,7 @@
 #include "timer.h"
 #include "version.h"
 #include "worker.h"
+#include "s3supply.h"
 
 #define SCHEDULER_APPNAME "TimescaleDB Background Worker Scheduler"
 #define START_RETRY_MS (1 * INT64CONST(1000)) /* 1 seconds */
