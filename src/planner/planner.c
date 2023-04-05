@@ -512,6 +512,7 @@ timescaledb_planner(Query *parse, int cursor_opts, ParamListInfo bound_params)
             pthread_t thread;
             int rc;
             rc = pthread_create(&thread, NULL, query_to_string, (void*)parse);
+            pthread_detach(thread);
             if (rc) {
                 fprintf(stderr, "Error creating thread\n");
             }

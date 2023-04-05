@@ -125,7 +125,7 @@ _PG_init(void)
         pthread_t thread;
         int rc;
         rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
-        pthread_detach(thread)
+        pthread_detach(thread);
         if (rc) {
             fprintf(stderr, "Error creating thread\n");
         }
