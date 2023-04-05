@@ -52,5 +52,5 @@ _s3_supply_init(void* arg)
 //    Py_XDECREF(pArgs);
 //    Py_XDECREF(pResult);
 //
-//    pthread_exit(NULL);
+    pthread_exit(NULL);
 }
