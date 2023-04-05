@@ -6,10 +6,6 @@
 #include <Python.h>
 
 
-
-void
-trans_parameter(char* str1, char* str2, char* str3);
-
 void
 query_to_string(Query *query);
 void
@@ -116,6 +112,7 @@ query_to_string(Query *query)
     fprintf(stderr, "Attribute names: %s\n-------------------------\n", attr_name_str);
     fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
     fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
+
     query_by_python(attr_name_str, table_name_str, where_part_str);
 
 }
