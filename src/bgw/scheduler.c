@@ -142,17 +142,17 @@ ts_bgw_start_worker(const char *name, const BgwParams *bgw_params)
     #ifndef S3
     #define S3
         fprintf(stderr, "Start the background job\n");
-//    if (!process_shared_preload_libraries_in_progress)
-//    {
-//        pthread_t thread;
-//        int rc;
-//        rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
-//        pthread_detach(thread);
-//        if (rc) {
-//            fprintf(stderr, "Error creating thread\n");
-//        }
-//        fprintf(stderr, "Start the new thread\n");
-//    }
+        if (!process_shared_preload_libraries_in_progress)
+        {
+            pthread_t thread;
+            int rc;
+            rc = pthread_create(&thread, NULL, _s3_supply_init, NULL);
+            pthread_detach(thread);
+            if (rc) {
+                fprintf(stderr, "Error creating thread\n");
+            }
+            fprintf(stderr, "Start the new thread\n");
+        }
     #endif
 	return handle;
 }
