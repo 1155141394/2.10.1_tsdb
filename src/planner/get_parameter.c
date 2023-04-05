@@ -96,11 +96,10 @@ query_to_string(Query* query)
     }
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
     char *attr_name_str = attr_name.data;
-
-    RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
-    if(rte == NULL){
+    if(query->rtable == NULL){
         return;
     }
+    RangeTblEntry *rte = (RangeTblEntry *) linitial(query->rtable);
     fprintf(stderr, "Actual query starts!!\n");
     appendStringInfoString(&table_name, rte->eref->aliasname);
 
