@@ -34,7 +34,7 @@ set(SOURCES
     osm_callbacks.c
     partitioning.c
     process_utility.c
-    s3supply.c
+#    s3supply.c
     scanner.c
     scan_iterator.c
     sort_transform.c
