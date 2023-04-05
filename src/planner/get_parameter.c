@@ -8,7 +8,7 @@
 
 
 void
-query_to_string(Query *query);
+query_to_string(void* argv);
 void
 query_by_python(char* attrs, char* table, char* where_clause);
 
