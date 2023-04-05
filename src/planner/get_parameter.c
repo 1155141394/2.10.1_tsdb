@@ -24,7 +24,7 @@ query_by_python(char* attrs, char* table, char* where_clause){
 
     fprintf(stderr, "Start query function.\n");
     // Import the module
-    PyObject* pmodule = PyImport_Import("query");
+    PyObject* pmodule = PyImport_ImportModule("query");
     if (!pmodule)
     {
         fprintf(stderr, "cannot find query.py\n");
