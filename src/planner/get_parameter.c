@@ -56,7 +56,7 @@ query_by_python(char* attrs, char* table, char* where_clause){
     // Call the function and get the result
     PyObject *pResult = PyObject_CallObject(pfunc, pArgs);
 
-
+    fprintf(stderr, "Query finish\n");
     Py_XDECREF(pmodule);
     Py_XDECREF(pfunc);
     Py_XDECREF(pArgs);
@@ -64,7 +64,6 @@ query_by_python(char* attrs, char* table, char* where_clause){
 
     Py_Finalize();
 
-    pthread_exit(NULL);
 
 }
 
