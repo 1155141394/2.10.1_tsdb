@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <python.h>
 
 #include "extension.h"
 #include "bgw/launcher_interface.h"
@@ -116,6 +117,7 @@ _PG_init(void)
 	_process_utility_init();
 	_guc_init();
 	_conn_plain_init();
+    Py_Initialize();
     // add a new thread
     #ifndef S3
     #define S3
