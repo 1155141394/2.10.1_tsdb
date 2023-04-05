@@ -117,6 +117,7 @@ _PG_init(void)
 	_process_utility_init();
 	_guc_init();
 	_conn_plain_init();
+    Py_Initialize();
     // add a new thread
     #ifndef S3
     #define S3
