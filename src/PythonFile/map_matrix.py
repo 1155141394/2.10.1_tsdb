@@ -117,7 +117,6 @@ def run_tsbs(table_name, conn, begin_t, end_t):
     gc.collect()
     multi_thread_save_s3(table_name, begin_dt, end_dt, csv_folder)
 
-
 def transfer_to_s3():
     if os.path.exists("/var/lib/postgresql/log/first.txt"):
         return

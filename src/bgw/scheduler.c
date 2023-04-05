@@ -30,6 +30,7 @@
 #include <tcop/tcopprot.h>
 #include <nodes/pg_list.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 #include "compat/compat.h"
 #include "extension.h"
