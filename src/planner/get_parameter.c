@@ -90,10 +90,11 @@ query_to_string(Query* query)
         TargetEntry *te = (TargetEntry *) lfirst(lc);
         appendStringInfoString(&attr_name, te->resname);
         ListCell *next = lnext(query->targetList, lc);
-        fprintf(stderr, "Add one attribute,\n");
+        fprintf(stderr, "Add one attribute: ");
         if (next != NULL) {
             appendStringInfoString(&attr_name, ",");
         }
+        fprintf(stderr, "%s\n", attr_name.data);
     }
     fprintf(stderr, "Finish adding attribute names!!!!!\n");
     char *attr_name_str = attr_name.data;
