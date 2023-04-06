@@ -2,7 +2,7 @@
 #include <nodes/nodes.h>
 #include <nodes/pg_list.h>
 #include <nodes/parsenodes.h>
-#include "parser/parse_clause.h"
+#include "nodes/nodeFuncs.h"
 #include <lib/stringinfo.h>
 #include <Python.h>
 
@@ -124,8 +124,8 @@ query_to_string(Query* query)
     // 从 Query 结构体中获取 groupClause
     List *groupClause = query->groupClause;
 
-// 调用 deparse_group_clause 函数将 groupClause 转换为字符串
-    char *groupClauseStr = deparse_group_clause(groupClause, query, false, false);
+// 调用 nodeToString 函数将 groupClause 转换为字符串
+    char *groupClauseStr = nodeToString(groupClause);
 
 // 将 groupClauseStr 输出到控制台
     printf("GROUP BY 子句: %s\n", groupClauseStr);
