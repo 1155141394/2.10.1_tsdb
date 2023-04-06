@@ -88,10 +88,12 @@ query_to_string(Query* query)
     foreach (lc, query->targetList)
     {
         TargetEntry *te = (TargetEntry *) lfirst(lc);
+        fprintf(stderr, "flag1\n");
         appendStringInfoString(&attr_name, te->resname);
+        fprintf(stderr, "flag2\n");
         ListCell *next = lnext(query->targetList, lc);
-        fprintf(stderr, "Add one attribute: ");
         if (next != NULL) {
+
             appendStringInfoString(&attr_name, ",");
         }
         fprintf(stderr, "%s\n", attr_name.data);
