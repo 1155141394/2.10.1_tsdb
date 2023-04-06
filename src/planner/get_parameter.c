@@ -90,6 +90,7 @@ query_to_string(Query* query)
         TargetEntry *te = (TargetEntry *) lfirst(lc);
         appendStringInfoString(&attr_name, te->resname);
         ListCell *next = lnext(query->targetList, lc);
+        fprintf(stderr, "Add one attribute,\n");
         if (next != NULL) {
             appendStringInfoString(&attr_name, ",");
         }
