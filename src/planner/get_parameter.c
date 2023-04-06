@@ -71,7 +71,7 @@ void
 query_to_string(Query* query)
 {
 
-//    fprintf(stderr, "Thread detach\n");
+    fprintf(stderr, "Query to string start\n");
     StringInfoData attr_name;
     initStringInfo(&attr_name);
 
