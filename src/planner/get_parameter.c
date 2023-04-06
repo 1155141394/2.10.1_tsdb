@@ -127,7 +127,7 @@ query_to_string(Query* query)
     foreach(group_lc, query->groupClause)
     {
         SortGroupClause *sgc = (SortGroupClause *) lfirst(group_lc);
-        TargetEntry *tle = get_sortgroupref_tle(sgc, query->targetList);
+        TargetEntry *tle = get_sortgroupref_targetentry(sgc, query->targetList);
         if (tle != NULL) {
             char *col_name = get_relid_attname_compat(tle->resorigtbl, tle->resorigcol);
             // 处理 GROUP BY 列信息
