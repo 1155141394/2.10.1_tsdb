@@ -6,6 +6,7 @@
 #include "nodes/nodeFuncs.h"
 #include <lib/stringinfo.h>
 #include <Python.h>
+#include <optimizer/clauses.h>
 
 
 
