@@ -2,6 +2,7 @@
 #include <nodes/nodes.h>
 #include <nodes/pg_list.h>
 #include <nodes/parsenodes.h>
+#include "parser/parsetree.h"
 #include "nodes/nodeFuncs.h"
 #include <lib/stringinfo.h>
 #include <Python.h>
@@ -121,15 +122,22 @@ query_to_string(Query* query)
         where_part_str = where_part.data;
     }
 
-    // 从 Query 结构体中获取 groupClause
-    List *groupClause = query->groupClause;
+    ListCell *lc;
+    foreach(lc, groupClause)
+    {
+        SortGroupClause *sgc = (SortGroupClause *) lfirst(lc);
+        TargetEntry *tle = get_sortgroupclause_tle(sgc, query->targetList);
+        Var *var = (Var *) tle->expr;
 
-// 调用 nodeToString 函数将 groupClause 转换为字符串
-    char *groupClauseStr = nodeToString(groupClause);
-
-// 将 groupClauseStr 输出到控制台
-    printf("GROUP BY 子句: %s\n", groupClauseStr);
-
+        // 检查目标列表元素的表达式是否是一个 Var，并且其关联的列名是否为 hostname
+        if (IsA(var, Var) && strcmp(get_rel_name(var->varno), "hostname") == 0)
+        {
+            // 获取列名
+            hostname = get_attname(var->varno, var->varattno, false);
+            break;
+        }
+        fprintf(stderr, "Group by: %s\n-------------------------\n", hostname);
+    }
 
 
 
