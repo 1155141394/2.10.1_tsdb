@@ -123,21 +123,16 @@ query_to_string(Query* query)
     }
 
     ListCell *group_lc;
-    char *hostname = NULL;
     foreach(group_lc, query->groupClause)
     {
         SortGroupClause *sgc = (SortGroupClause *) lfirst(group_lc);
         TargetEntry *tle = get_sortgroupclause_tle(sgc, query->targetList);
-        Var *var = (Var *) tle->expr;
-
-        // 检查目标列表元素的表达式是否是一个 Var，并且其关联的列名是否为 hostname
-        if (IsA(var, Var) )
-        {
-            // 获取列名
-            hostname = get_attname(var->varno, var->varattno, false);
-            break;
+        if (tle != NULL) {
+            char *col_name = get_attname(tle->resorigtbl, tle->resorigcol);
+            // 处理 GROUP BY 列信息
+            fprintf(stderr, "Group by: %s\n-------------------------\n", col_name);
         }
-        fprintf(stderr, "Group by: %s\n-------------------------\n", hostname);
+
     }
 
 
