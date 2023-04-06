@@ -123,7 +123,8 @@ query_to_string(Query* query)
     }
 
     ListCell *group_lc;
-    foreach(group_lc, groupClause)
+    char *hostname = NULL;
+    foreach(group_lc, query->groupClause;)
     {
         SortGroupClause *sgc = (SortGroupClause *) lfirst(group_lc);
         TargetEntry *tle = get_sortgroupclause_tle(sgc, query->targetList);
