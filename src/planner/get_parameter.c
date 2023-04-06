@@ -122,10 +122,10 @@ query_to_string(Query* query)
         where_part_str = where_part.data;
     }
 
-    ListCell *lc;
-    foreach(lc, groupClause)
+    ListCell *group_lc;
+    foreach(group_lc, groupClause)
     {
-        SortGroupClause *sgc = (SortGroupClause *) lfirst(lc);
+        SortGroupClause *sgc = (SortGroupClause *) lfirst(group_lc);
         TargetEntry *tle = get_sortgroupclause_tle(sgc, query->targetList);
         Var *var = (Var *) tle->expr;
 
