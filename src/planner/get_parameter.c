@@ -131,7 +131,7 @@ query_to_string(Query* query)
         Var *var = (Var *) tle->expr;
 
         // 检查目标列表元素的表达式是否是一个 Var，并且其关联的列名是否为 hostname
-        if (IsA(var, Var) && strcmp(get_rel_name(var->varno), "hostname") == 0)
+        if (IsA(var, Var) )
         {
             // 获取列名
             hostname = get_attname(var->varno, var->varattno, false);
