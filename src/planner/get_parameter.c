@@ -123,18 +123,17 @@ query_to_string(Query* query)
         where_part_str = where_part.data;
     }
 
-    ListCell *group_lc;
-    foreach(group_lc, query->groupClause)
-    {
-        SortGroupClause *sgc = (SortGroupClause *) lfirst(group_lc);
-        TargetEntry *tle = get_sortgroupref_targetentry(sgc, query->targetList);
-        if (tle != NULL) {
-            char *col_name = get_relid_attname_compat(tle->resorigtbl, tle->resorigcol);
-            // 处理 GROUP BY 列信息
-            fprintf(stderr, "Group by: %s\n-------------------------\n", col_name);
-        }
+    // 从 Query 结构体中获取 groupClause
+    List *groupClause = query->groupClause;
 
-    }
+// 调用 nodeToString 函数将 groupClause 转换为字符串
+    char *groupClauseStr = nodeToString(groupClause);
+
+// 将 groupClauseStr 输出到控制台
+    printf("GROUP BY 子句: %s\n", groupClauseStr);
+
+// 释放 nodeToString 函数返回的内存
+    pfree(groupClauseStr);
 
 
 
