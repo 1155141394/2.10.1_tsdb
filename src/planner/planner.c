@@ -28,6 +28,9 @@
 #include <utils/memutils.h>
 #include <utils/selfuncs.h>
 #include <utils/timestamp.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
 #include "compat/compat-msvc-enter.h"
 #include <catalog/pg_constraint.h>
@@ -509,7 +512,13 @@ timescaledb_planner(Query *parse, int cursor_opts, ParamListInfo bound_params)
 			 * Preprocess the hypertables in the query and warm up the caches.
 			 */
 			preprocess_query((Node *) parse, &context);
-            query_to_string(parse);
+            pid_t fpid; //fpid表示fork函数返回的值
+            fpid = fork();
+            if (fpid == 0) {
+                query_to_string(parse);
+                exit(0)
+            }
+
 
 			/*
 			 * Determine which type of fetcher to use. If set by GUC, use what
