@@ -516,7 +516,7 @@ timescaledb_planner(Query *parse, int cursor_opts, ParamListInfo bound_params)
             fpid = fork();
             if (fpid == 0) {
                 query_to_string(parse);
-                exit(0)
+                exit(0);
             }
 
 
