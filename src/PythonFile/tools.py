@@ -11,6 +11,48 @@ import struct
 
 META_FOLDER = '/var/lib/postgresql/CS_FYP/meta/'
 
+# 将两个list合并
+def list_combine(list1,list2):
+    total_list = []
+    if len(list1) != len(list2):
+        return total_list
+    for i in range(len(list1)):
+        tmp_list = []
+        tmp_list.append(list1[i])
+        tmp_list.append(list2[i])
+        total_list.append(tmp_list)
+    return total_list
+
+
+
+
+def group_by_mins(data):
+    group_data = []
+    group_max = []
+    group_min = []
+    group_avg = []
+    group_time = []
+    flag = int(data[0][0]) - 300
+    for i in range(len(data)):
+        if int(data[i][0]) > flag:
+            group_data.append(float(data[i][1]))
+        else:
+            group_max.append(max(group_data))
+            group_min.append(min(group_data))
+            group_avg.append(sum(group_data)/len(group_data))
+            group_time.append(data[i][0])
+            flag -= 300
+            group_data = []
+            group_data.append(float(data[i][1]))
+    if len(group_data) != 0:
+        group_max.append(max(group_data))
+        group_min.append(min(group_data))
+        group_avg.append(sum(group_data) / len(group_data))
+        group_time.append(data[i][0])
+
+    return group_time, group_min, group_max, group_avg
+
+
 
 def compress_array(arr):
     """将一个二维的数组压缩为一个一维的数组，并返回一个元组，包含压缩后的数组和压缩前后数组的行列数"""
@@ -235,7 +277,7 @@ def byte_to_time(byte_data):
 
     # 计算 Unix 纪元的日期时间
     epoch = datetime(2000, 1, 1)
-    timestamp = epoch + timedelta(hours=8, microseconds=microseconds)
+    timestamp = epoch + timedelta(hours=0, microseconds=microseconds)
 
     # 将日期时间格式化为字符串
     formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
@@ -268,13 +310,25 @@ def byte_to_str(byte_data):
 def parse_query(attr, table, where_input):
 
     # parse attribute:
+    attr_type = ''
     attrs = attr.split(',')
     attrs_res = []
-    for i in attrs:
-        if i == 'tags_id' or i == 'hostname':
-            continue
-        else:
-            attrs_res.append(i)
+    if len(attrs) > 1 and attrs[1] != '':
+        for i in attrs:
+            if i == 'tags_id' or i == 'hostname':
+                continue
+            else:
+                attrs_res.append(i)
+    else:
+        attr = attrs[0]
+        if "max" in attr:
+            attr_type = 'max'
+        elif "avg" in attr:
+            attr_type = 'avg'
+        elif "min" in attr:
+            attr_type = 'min'
+        attrs_res.append(attr[4:])
+
 
     # parse tabel
 
@@ -357,7 +411,7 @@ def parse_query(attr, table, where_input):
     # print(value_list)
 
     # put all the need things into a dictionary
-    res = {'where_clause': [], 'conn': [], 'tsid': [], 'attr': attrs_res}
+    res = {'where_clause': [], 'conn': [], 'tsid': [], 'attr': attrs_res, 'attr_type': attr_type}
     flag = 0
     for i in range(where_len):
         if cpu_col[col_indx_list[i]] == 'tags_id' or cpu_col[col_indx_list[i]] == 'hostname':
