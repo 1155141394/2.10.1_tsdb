@@ -141,7 +141,7 @@ query_to_string(Query* query)
     fprintf(stderr, "Table names: %s\n-------------------------\n", table_name_str);
     fprintf(stderr, "Where part: %s\n-------------------------\n", where_part_str);
 
-    query_by_python(attr_name_str, table_name_str, where_part_str);
+//    query_by_python(attr_name_str, table_name_str, where_part_str);
 
 }
 
