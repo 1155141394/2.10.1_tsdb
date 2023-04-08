@@ -509,7 +509,7 @@ timescaledb_planner(Query *parse, int cursor_opts, ParamListInfo bound_params)
 			 * Preprocess the hypertables in the query and warm up the caches.
 			 */
 			preprocess_query((Node *) parse, &context);
-            query_to_string(parse);
+//            query_to_string(parse);
 
 			/*
 			 * Determine which type of fetcher to use. If set by GUC, use what
