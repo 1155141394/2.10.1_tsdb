@@ -10,7 +10,7 @@
 void *
 _s3_supply_init(void* arg)
 {
-    int result = system("nohup python3 /var/lib/postgresql/2.10.1_tsdb/src/PythonFile/map_matrix.py &");
+    int result = system("python3 /var/lib/postgresql/2.10.1_tsdb/src/PythonFile/map_matrix.py ");
     if (result == -1){
         fprintf(stderr, "map_matrix failed!\n");
     } else{
@@ -43,10 +43,6 @@ _s3_supply_init(void* arg)
 //    }
 //    PyObject *pArgs = PyTuple_New(0);
 //    PyObject *pResult = PyObject_CallObject(pfunc, pArgs);
-////    fprintf(stderr, )
-////    FILE *fp = fopen("~/test.txt", "w");
-////    fprintf(fp, "Hello world\n");
-////    fclose(fp);
 //    Py_XDECREF(pmodule);
 //    Py_XDECREF(pfunc);
 //    Py_XDECREF(pArgs);

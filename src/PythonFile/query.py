@@ -271,8 +271,10 @@ def query(attr,table,input):
     total_cost = end_time - begin_time
     findid_cost = findid_e - findid_b
     # print(df_list)
-    print(f'Find id cost:{findid_cost} sec')
-    print(f'Query cost: {total_cost} sec')
+    with open("/var/lib/postgresql/log/data/query_time.txt", 'w') as f:
+        f.write(f'Find id cost:{findid_cost} sec')
+        f.write(f'Query cost: {total_cost} sec')
+
 
     if len(df_list) < 2:
         df.to_csv(f'/var/lib/postgresql/CS_FYP/data/result.csv')

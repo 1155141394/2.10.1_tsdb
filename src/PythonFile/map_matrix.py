@@ -150,9 +150,7 @@ def transfer_to_s3():
                 time.sleep(60)
 
             else:
-                with open('/var/lib/postgresql/log/output.txt','a') as f:
-                    f.write("Wait\n")
-                time.sleep(5)
+                time.sleep(20)
 
 
 
