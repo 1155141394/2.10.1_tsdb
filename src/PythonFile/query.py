@@ -253,7 +253,7 @@ def query(attr,table,input):
 
     findid_b = time.time()
 
-    tsid = find_id(tags_list,attr)
+    tsids = find_id(tags_list,attr)
     # tsids = find_id(['host_9'], attr)
     # tsids += find_id(['host_15'],attr)
     # tsids += find_id(['host_20'],attr)
