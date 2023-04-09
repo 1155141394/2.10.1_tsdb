@@ -140,10 +140,11 @@ def transfer_to_s3():
                     f.write(datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"))
                     f.write("\n")
                     for table_name in table_names:
-                        f.write("Start transfer the data in table %s.\n" % table_name)
-                        run_tsbs(table_name, conn, datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"),
-                                 datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
-                        conn.commit()
+                        if table_name == "cpu":
+                            f.write("Start transfer the data in table %s.\n" % table_name)
+                            run_tsbs(table_name, conn, datetime.datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S"),
+                                     datetime.datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S"))
+                            conn.commit()
                     f.write("Finish transferring data in all the table.\n")
                 conn.close()
                 time.sleep(60)
