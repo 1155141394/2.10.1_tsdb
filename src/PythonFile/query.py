@@ -247,17 +247,18 @@ def query(attr,table,input):
     begin_time = time.time()
 
     where_clause = query_dict['where_clause']
-    # tags_list = query_dict['tags']
+    tags_list = query_dict['tags']
     attr = query_dict['attr']
     attr_type = query_dict['attr_type']
 
     findid_b = time.time()
 
-    tsids = find_id(['host_9'], attr)
-    tsids += find_id(['host_15'],attr)
-    tsids += find_id(['host_20'],attr)
-    tsids += find_id(['host_36'],attr)
-    tsids += find_id(['host_44'],attr)
+    tsid = find_id(tags_list,attr)
+    # tsids = find_id(['host_9'], attr)
+    # tsids += find_id(['host_15'],attr)
+    # tsids += find_id(['host_20'],attr)
+    # tsids += find_id(['host_36'],attr)
+    # tsids += find_id(['host_44'],attr)
 
     findid_e = time.time()
     print(tsids)
@@ -271,7 +272,7 @@ def query(attr,table,input):
     total_cost = end_time - begin_time
     findid_cost = findid_e - findid_b
     # print(df_list)
-    with open("/var/lib/postgresql/log/data/query_time.txt", 'w') as f:
+    with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
         f.write(f'Find id cost:{findid_cost} sec')
         f.write(f'Query cost: {total_cost} sec')
 
