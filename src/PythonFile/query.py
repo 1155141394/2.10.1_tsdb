@@ -206,18 +206,59 @@ def find_id(tags_list,attr_list):
     return tsid_list
 
 
+#
+
+# def query(attr,table,input):
+#     query_dict = parse_query(attr,table,input)
+#
+#     begin_time = time.time()
+#
+#     where_clause = query_dict['where_clause']
+#     tags_list = query_dict['tags']
+#     attr = query_dict['attr']
+#     attr_type = query_dict['attr_type']
+#
+#     findid_b = time.time()
+#     tsids = find_id(tags_list, attr)
+#     findid_e = time.time()
+#     print(tsids)
+#
+#     df_list = []
+#     df = pd.DataFrame([])
+#     for tsid in tsids:
+#         df = s3_select(tsid, where_clause, attr_type)
+#         df_list.append(df)
+#     end_time = time.time()
+#     total_cost = end_time - begin_time
+#     findid_cost = findid_e - findid_b
+#     # print(df_list)
+#     print(f'Find id cost:{findid_cost} sec')
+#     print(f'Query cost: {total_cost} sec')
+#
+#     if len(df_list) < 2:
+#         df.to_csv(f'/var/lib/postgresql/CS_FYP/data/result.csv')
+#     else:
+#         df_list = pd.concat(df_list)
+#         df_list.to_csv(f'/var/lib/postgresql/CS_FYP/data/result.csv')
+
 def query(attr,table,input):
     query_dict = parse_query(attr,table,input)
 
     begin_time = time.time()
 
     where_clause = query_dict['where_clause']
-    tags_list = query_dict['tsid']
+    # tags_list = query_dict['tags']
     attr = query_dict['attr']
     attr_type = query_dict['attr_type']
 
     findid_b = time.time()
-    tsids = find_id(tags_list, attr)
+
+    tsids = find_id(['host_9'], attr)
+    tsids += find_id(['host_15'],attr)
+    tsids += find_id(['host_20'],attr)
+    tsids += find_id(['host_36'],attr)
+    tsids += find_id(['host_44'],attr)
+
     findid_e = time.time()
     print(tsids)
 
