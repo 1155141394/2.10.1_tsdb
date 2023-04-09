@@ -261,7 +261,8 @@ def query(attr,table,input):
     # tsids += find_id(['host_44'],attr)
 
     findid_e = time.time()
-    print(tsids)
+    with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
+        f.write(str(tsids) + '\n')
 
     df_list = []
     df = pd.DataFrame([])
@@ -273,7 +274,7 @@ def query(attr,table,input):
     findid_cost = findid_e - findid_b
     # print(df_list)
     with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
-        f.write(f'Find id cost:{findid_cost} sec')
+        f.write(f'Find id cost:{findid_cost} sec\n')
         f.write(f'Query cost: {total_cost} sec')
 
 
