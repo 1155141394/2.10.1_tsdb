@@ -212,12 +212,12 @@ def query(attr,table,input):
     begin_time = time.time()
 
     where_clause = query_dict['where_clause']
-    tsid = query_dict['tsid']
+    tags_list = query_dict['tsid']
     attr = query_dict['attr']
     attr_type = query_dict['attr_type']
 
     findid_b = time.time()
-    tsids = find_id(tsid, attr)
+    tsids = find_id(tags_list, attr)
     findid_e = time.time()
     print(tsids)
 
