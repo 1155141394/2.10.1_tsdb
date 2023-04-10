@@ -69,7 +69,7 @@ def s3_data(expression, key, attr_type):
             data = list_combine(time_group,min_group)
         elif attr_type == 'avg':
             data = list_combine(time_group,avg_group)
-    print(data)
+    # print(data)
     return data
 
 
