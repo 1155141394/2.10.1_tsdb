@@ -443,7 +443,7 @@ def parse_query(attr, table, where_input):
             # res['conn'].pop()
         else:
             if vartype_list[i] == "float8":
-                tmp = "CAST("+ cpu_col[col_indx_list[i]] + ' AS FLOAT) ' + opno_list[i] + " " + str(value_list[i])
+                tmp = "CAST("+ cpu_col[col_indx_list[i]] + " AS FLOAT) " + opno_list[i] + " " + str(value_list[i])
             else:
                 tmp = cpu_col[col_indx_list[i]] + ' ' + opno_list[i] + " '" + str(value_list[i]) + "'"
             res['where_clause'].append(tmp)
