@@ -279,10 +279,10 @@ def query(attr,table,input):
 
 
     if len(df_list) < 2:
-        df.to_csv(f'/var/lib/postgresql/CS_FYP/data/result.csv')
+        df.to_csv(f'/var/lib/postgresql/log/result.csv')
     else:
         df_list = pd.concat(df_list)
-        df_list.to_csv(f'/var/lib/postgresql/CS_FYP/data/result.csv')
+        df_list.to_csv(f'/var/lib/postgresql/log/result.csv')
 
 
 if __name__ == "__main__":
