@@ -277,7 +277,7 @@ def query(attr,table,input):
     with open('/var/lib/postgresql/log/result.csv', 'w') as f:
         f.write(f'Query {str(attr)} from TSID {tsids} \n')
 
-    p = Pool()
+    p = Pool(4)
     for tsid in tsids:
         p.apply_async(s3_select, args=(tsid, where_clause, attr_type,))
     p.close()
