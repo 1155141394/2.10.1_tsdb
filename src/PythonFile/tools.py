@@ -26,13 +26,13 @@ def list_combine(list1,list2):
 
 
 
-def group_by_mins(data):
+def group_by_sec(data, sec_num):
     group_data = []
     group_max = []
     group_min = []
     group_avg = []
     group_time = []
-    flag = int(data[0][0]) - 300
+    flag = int(data[0][0]) - sec_num
     for i in range(len(data)):
         if int(data[i][0]) > flag:
             group_data.append(float(data[i][1]))
@@ -41,7 +41,7 @@ def group_by_mins(data):
             group_min.append(min(group_data))
             group_avg.append(sum(group_data)/len(group_data))
             group_time.append(data[i][0])
-            flag -= 300
+            flag -= sec_num
             group_data = []
             group_data.append(float(data[i][1]))
     if len(group_data) != 0:

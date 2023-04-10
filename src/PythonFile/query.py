@@ -61,7 +61,7 @@ def s3_data(expression, key, attr_type):
         data.append(data_line)
     # 需要进行分组处理一段时间的数据
     if attr_type != '':
-        time_group, min_group, max_group, avg_group = group_by_mins(data)
+        time_group, min_group, max_group, avg_group = group_by_sec(data, 3600)
         data = []
         if attr_type == 'max':
             data = list_combine(time_group,max_group)
