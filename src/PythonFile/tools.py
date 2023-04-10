@@ -306,6 +306,16 @@ def byte_to_str(byte_data):
     return result[1:]
 
 
+def byte_to_float(byte_data):
+    byte_data_new = []
+    for i in byte_data:
+        if i < 0:
+            i += 256
+        byte_data_new.append(i)
+
+    float_value = struct.unpack('!d', bytes(byte_data_new))[0]
+    return float_value
+
 
 def parse_query(attr, table, where_input):
 
@@ -357,7 +367,7 @@ def parse_query(attr, table, where_input):
     opno_dict = {'96': '=', '97': '<', '521': '>', '523': '<=', '525': '>=',  # int4
                  '1320': '=', '1322': '<', '1323': '<=', '1324': '>', '1325': '>=',  # timestamptz
                  '98': '=',  #text
-                 '674': '>'
+                 '674': '>' #float
                  }
 
     # variable type dictionary
