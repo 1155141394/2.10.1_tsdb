@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from tools import *
 from hash import HashTable
+from multiprocessing import Pool
 
 META_FOLDER = '/var/lib/postgresql/CS_FYP/meta/'
 
@@ -145,7 +146,8 @@ def s3_select(tsid, where_clause, attr_type):
         key = retrieve_file[0]
         data = s3_data(expression, key, attr_type)
         df = pd.DataFrame(data)
-        return df
+        df.to_csv(f'/var/lib/postgresql/log/result.csv', mode='a', index=False, header=False)
+        return
 
     else:
         data = []
@@ -172,7 +174,8 @@ def s3_select(tsid, where_clause, attr_type):
         if ret_data is not None:
             data += ret_data
         df = pd.DataFrame(data)
-        return df
+        df.to_csv(f'/var/lib/postgresql/log/result.csv', mode='a', index=False, header=False)
+        return
 
 
 def find_id(tags_list,attr_list):
@@ -270,11 +273,12 @@ def query(attr,table,input):
         f.write(str(where_clause) + '\n')
         f.write(str(attr) + '\n')
 
-    df_list = []
-    df = pd.DataFrame([])
+    p = Pool()
     for tsid in tsids:
-        df = s3_select(tsid, where_clause, attr_type)
-        df_list.append(df)
+        p.apply_async(s3_select, args=(tsid, where_clause, attr_type,))
+    p.close()
+    p.join()
+
     end_time = time.time()
     total_cost = end_time - begin_time
     findid_cost = findid_e - findid_b
@@ -284,11 +288,11 @@ def query(attr,table,input):
         f.write(f'Query cost: {total_cost} sec')
 
 
-    if len(df_list) < 2:
-        df.to_csv(f'/var/lib/postgresql/log/result.csv')
-    else:
-        df_list = pd.concat(df_list)
-        df_list.to_csv(f'/var/lib/postgresql/log/result.csv')
+    # if len(df_list) < 2:
+    #     df.to_csv(f'/var/lib/postgresql/log/result.csv')
+    # else:
+    #     df_list = pd.concat(df_list)
+    #     df_list.to_csv(f'/var/lib/postgresql/log/result.csv')
 
 
 if __name__ == "__main__":
