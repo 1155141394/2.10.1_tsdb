@@ -276,7 +276,7 @@ def query(attr,table,input):
     total_cost = end_time - begin_time
     findid_cost = findid_e - findid_b
     # print(df_list)
-    with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
+    with open("/var/lib/postgresql/log/query_time.txt", 'a') as f:
         f.write(f'Find id cost:{findid_cost} sec\n')
         f.write(f'Query cost: {total_cost} sec')
 
