@@ -8,6 +8,7 @@ import numpy as np
 from tools import *
 from hash import HashTable
 from multiprocessing import Pool
+import os
 
 META_FOLDER = '/var/lib/postgresql/CS_FYP/meta/'
 
@@ -257,21 +258,24 @@ def query(attr,table,input):
 
     findid_b = time.time()
 
-    # tsids = find_id(tags_list,attr)
-    tsids = find_id(['host_9'], attr)
-    tsids += find_id(['host_15'],attr)
-    tsids += find_id(['host_20'],attr)
-    tsids += find_id(['host_36'],attr)
-    tsids += find_id(['host_37'],attr)
-    tsids += find_id(['host_10'],attr)
-    tsids += find_id(['host_44'],attr)
-    tsids += find_id(['host_23'],attr)
+    tsids = find_id(tags_list,attr)
+    # tsids = find_id(['host_9'], attr)
+    # tsids += find_id(['host_15'],attr)
+    # tsids += find_id(['host_20'],attr)
+    # tsids += find_id(['host_36'],attr)
+    # tsids += find_id(['host_37'],attr)
+    # tsids += find_id(['host_10'],attr)
+    # tsids += find_id(['host_44'],attr)
+    # tsids += find_id(['host_23'],attr)
 
     findid_e = time.time()
     with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
         f.write(str(tsids) + '\n')
         f.write(str(where_clause) + '\n')
         f.write(str(attr) + '\n')
+
+    with open('/var/lib/postgresql/log/result.csv', 'w') as f:
+        f.write(f'Query {str(attr)} from TSID {tsids} \n')
 
     p = Pool()
     for tsid in tsids:
