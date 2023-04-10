@@ -247,18 +247,21 @@ def query(attr,table,input):
     begin_time = time.time()
 
     where_clause = query_dict['where_clause']
-    tags_list = query_dict['tags']
+    # tags_list = query_dict['tags']
     attr = query_dict['attr']
     attr_type = query_dict['attr_type']
 
     findid_b = time.time()
 
-    tsids = find_id(tags_list,attr)
-    # tsids = find_id(['host_9'], attr)
-    # tsids += find_id(['host_15'],attr)
-    # tsids += find_id(['host_20'],attr)
-    # tsids += find_id(['host_36'],attr)
-    # tsids += find_id(['host_44'],attr)
+    # tsids = find_id(tags_list,attr)
+    tsids = find_id(['host_9'], attr)
+    tsids += find_id(['host_15'],attr)
+    tsids += find_id(['host_20'],attr)
+    tsids += find_id(['host_36'],attr)
+    tsids += find_id(['host_37'],attr)
+    tsids += find_id(['host_10'],attr)
+    tsids += find_id(['host_44'],attr)
+    tsids += find_id(['host_23'],attr)
 
     findid_e = time.time()
     with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
