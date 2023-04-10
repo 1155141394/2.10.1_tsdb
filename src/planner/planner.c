@@ -515,7 +515,7 @@ timescaledb_planner(Query *parse, int cursor_opts, ParamListInfo bound_params)
 //            pid_t fpid; //fpid表示fork函数返回的值
 //            fpid = fork();
 //            if (fpid == 0) {
-//            query_to_string(parse);
+            query_to_string(parse);
 //                exit(0);
 //            }
 
