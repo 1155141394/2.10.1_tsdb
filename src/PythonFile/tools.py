@@ -423,7 +423,7 @@ def parse_query(attr, table, where_input):
             value_list.append(byte_to_str(byte_list[i]))
 
         elif vartype_list[i] == 'float8':
-            value_list.append(byte_to_float(byte_list[i]))
+            value_list.append(byte_to_int(byte_list[i]))
 
 
     # print(BoolEXPR)
