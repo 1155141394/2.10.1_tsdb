@@ -313,21 +313,28 @@ def parse_query(attr, table, where_input):
     attr_type = ''
     attrs = attr.split(',')
     attrs_res = []
-    if len(attrs) > 1 and attrs[1] != '':
+    if "max" in attrs[0]:
+        attr_type = 'max'
+        for i in attrs:
+            if i == 'tags_id' or i == 'hostname':
+                continue
+            else:
+                attrs_res.append(i[4:])
+    elif len(attrs) > 1 and attrs[1] != '':
         for i in attrs:
             if i == 'tags_id' or i == 'hostname':
                 continue
             else:
                 attrs_res.append(i)
-    else:
-        attr = attrs[0]
-        if "max" in attr:
-            attr_type = 'max'
-        elif "avg" in attr:
-            attr_type = 'avg'
-        elif "min" in attr:
-            attr_type = 'min'
-        attrs_res.append(attr[4:])
+    # else:
+    #     attr = attrs[0]
+    #     if "max" in attr:
+    #         attr_type = 'max'
+    #     elif "avg" in attr:
+    #         attr_type = 'avg'
+    #     elif "min" in attr:
+    #         attr_type = 'min'
+    #     attrs_res.append(attr[4:])
 
 
     # parse tabel
