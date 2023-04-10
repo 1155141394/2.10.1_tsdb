@@ -266,6 +266,8 @@ def query(attr,table,input):
     findid_e = time.time()
     with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
         f.write(str(tsids) + '\n')
+        f.write(str(where_clause) + '\n')
+        f.write(str(attr) + '\n')
 
     df_list = []
     df = pd.DataFrame([])
