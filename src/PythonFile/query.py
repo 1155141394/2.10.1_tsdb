@@ -140,7 +140,8 @@ def s3_select(tsid, where_clause, attr_type):
         basic_exp += ' AND '
     if len(retrieve_file) == 1:
         expression = basic_exp + "s.\"time\" > '%s' AND s.\"time\" < '%s';" % (beg_t_str, end_t_str)
-        print(expression)
+        with open("/var/lib/postgresql/log/query_time.txt", 'a') as f:
+            f.write(expression)
         key = retrieve_file[0]
         data = s3_data(expression, key, attr_type)
         df = pd.DataFrame(data)
@@ -157,8 +158,8 @@ def s3_select(tsid, where_clause, attr_type):
         for i in range(1, len(retrieve_file) - 1):
             expression = "SELECT * FROM s3object s"
             if attr_con != '':
-                basic_exp += ' WHERE '
-                basic_exp += attr_con
+                expression += ' WHERE '
+                expression += attr_con
             key = retrieve_file[i]
             ret_data = s3_data(expression, key, attr_type)
             if ret_data is None:
