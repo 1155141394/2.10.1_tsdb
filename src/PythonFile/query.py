@@ -258,15 +258,15 @@ def query(attr,table,input):
 
     findid_b = time.time()
 
-    tsids = find_id(tags_list,attr)
-    # tsids = find_id(['host_9'], attr)
-    # tsids += find_id(['host_15'],attr)
-    # tsids += find_id(['host_20'],attr)
-    # tsids += find_id(['host_36'],attr)
-    # tsids += find_id(['host_37'],attr)
-    # tsids += find_id(['host_10'],attr)
-    # tsids += find_id(['host_44'],attr)
-    # tsids += find_id(['host_23'],attr)
+    # tsids = find_id(tags_list,attr)
+    tsids = find_id(['host_9'], attr)
+    tsids += find_id(['host_15'],attr)
+    tsids += find_id(['host_20'],attr)
+    tsids += find_id(['host_36'],attr)
+    tsids += find_id(['host_37'],attr)
+    tsids += find_id(['host_10'],attr)
+    tsids += find_id(['host_44'],attr)
+    tsids += find_id(['host_23'],attr)
 
     findid_e = time.time()
     with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
