@@ -61,7 +61,7 @@ def s3_data(expression, key, attr_type):
         data.append(data_line)
     # 需要进行分组处理一段时间的数据
     if attr_type != '':
-        time_group, min_group, max_group, avg_group = group_by_mins(data)
+        time_group, min_group, max_group, avg_group = group_by_sec(data, 3600)
         data = []
         if attr_type == 'max':
             data = list_combine(time_group,max_group)
@@ -69,7 +69,7 @@ def s3_data(expression, key, attr_type):
             data = list_combine(time_group,min_group)
         elif attr_type == 'avg':
             data = list_combine(time_group,avg_group)
-    print(data)
+    # print(data)
     return data
 
 
@@ -247,25 +247,27 @@ def query(attr,table,input):
     begin_time = time.time()
 
     where_clause = query_dict['where_clause']
-    # tags_list = query_dict['tags']
+    tags_list = query_dict['tags']
     attr = query_dict['attr']
     attr_type = query_dict['attr_type']
 
     findid_b = time.time()
 
-    # tsids = find_id(tags_list,attr)
-    tsids = find_id(['host_9'], attr)
-    tsids += find_id(['host_15'],attr)
-    tsids += find_id(['host_20'],attr)
-    tsids += find_id(['host_36'],attr)
-    tsids += find_id(['host_37'],attr)
-    tsids += find_id(['host_10'],attr)
-    tsids += find_id(['host_44'],attr)
-    tsids += find_id(['host_23'],attr)
+    tsids = find_id(tags_list,attr)
+    # tsids = find_id(['host_9'], attr)
+    # tsids += find_id(['host_15'],attr)
+    # tsids += find_id(['host_20'],attr)
+    # tsids += find_id(['host_36'],attr)
+    # tsids += find_id(['host_37'],attr)
+    # tsids += find_id(['host_10'],attr)
+    # tsids += find_id(['host_44'],attr)
+    # tsids += find_id(['host_23'],attr)
 
     findid_e = time.time()
     with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
         f.write(str(tsids) + '\n')
+        f.write(str(where_clause) + '\n')
+        f.write(str(attr) + '\n')
 
     df_list = []
     df = pd.DataFrame([])
@@ -276,7 +278,7 @@ def query(attr,table,input):
     total_cost = end_time - begin_time
     findid_cost = findid_e - findid_b
     # print(df_list)
-    with open("/var/lib/postgresql/log/query_time.txt", 'w') as f:
+    with open("/var/lib/postgresql/log/query_time.txt", 'a') as f:
         f.write(f'Find id cost:{findid_cost} sec\n')
         f.write(f'Query cost: {total_cost} sec')
 
