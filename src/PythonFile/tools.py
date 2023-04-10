@@ -326,6 +326,12 @@ def parse_query(attr, table, where_input):
                 continue
             else:
                 attrs_res.append(i)
+    else:
+        for i in attrs:
+            if i == 'tags_id' or i == 'hostname':
+                continue
+            else:
+                attrs_res.append(i)
     # else:
     #     attr = attrs[0]
     #     if "max" in attr:
