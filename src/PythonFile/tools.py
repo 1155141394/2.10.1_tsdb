@@ -326,7 +326,7 @@ def parse_query(attr, table, where_input):
     if "max" in attrs[0]:
         attr_type = 'max'
         for i in attrs:
-            if i == 'tags_id' or i == 'hostname':
+            if i == 'tags_id' or i == 'hostname' or i == 'minute':
                 continue
             else:
                 attrs_res.append(i[4:])
